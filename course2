@@ -1,0 +1,210 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+struct Account
+{
+	char name[100];
+	char idCard[19];
+	char tel[12];
+	char uesrname[100];
+	char password[7];
+	float money;
+	struct Account *next;
+};
+typedef struct Account Account;
+
+Account * head=NULL;
+Account * tail=NULL;
+
+void LoadData()
+{
+	FILE* fp=fopen("D:/atm.txt","r");
+	if(fp!=NULL)
+	{
+		while(!feof(fp))
+		{
+			//创建结点
+			Account * newNode=(Account *)malloc(sizeof(Account));
+			//结点初始化
+			newNode->next=NULL;
+			fscanf(fp,"%s %s\n",newNode->uesrname,newNode->password);
+			//添加结点到链表
+			if(head==NULL)
+			{
+				head=newNode;
+				tail=newNode;
+			}
+			else
+			{
+				tail->next=newNode;
+				tail=newNode;
+			}
+		}
+		printf("加载成功！\n");
+		fclose(fp);
+	}
+}
+
+void printLinkedList()
+{
+	Account * curP=head;
+	while(curP!=NULL)
+	{
+		printf("%s\t%s\n",curP->uesrname,curP->password);
+		curP=curP->next;
+	}
+}
+
+void saveData()
+{
+	FILE* fp=fopen("D:/atm.txt","w");
+	if(fp!=NULL)
+	{
+		Account * curP=head;
+		while(curP!=NULL)
+		{
+			fprintf(fp,"%s %s\n",curP->uesrname,curP->password);
+			curP=curP->next;
+		}
+	}
+}
+
+void signUp()
+{
+	//申请一块堆内存空间，将其地址赋值给指针newNodeP
+	Account * newNodeP=(Account *)malloc(sizeof(Account));
+	printf("请输入姓名:\n");
+	scanf("%s",newNodeP->name);
+
+	printf("请输入身份证号:\n");
+	scanf("%s",newNodeP->idCard);
+
+	printf("请输入电话:\n");
+	scanf("%s",newNodeP->tel);
+
+	printf("请输入账号:\n");
+	scanf("%s",newNodeP->uesrname);
+
+	printf("请输入密码:\n");
+	scanf("%s",newNodeP->password);
+
+	newNodeP->money=0.0f;
+	newNodeP->next=NULL;
+
+	if(head==NULL)
+	{
+		head=newNodeP;
+		tail=newNodeP;
+	}
+	else
+	{
+		tail->next=newNodeP;
+		tail=newNodeP;
+	}
+	printf("创建成功!\n");
+}
+
+void signIn()
+{
+
+}
+
+void signtheUp()
+{
+    //申请一块堆内存空间，将其地址赋值给指针newNodeP
+	Account * newNodeP=(Account *)malloc(sizeof(Account));
+	printf("please input your name:\n");
+	scanf("%s",newNodeP->name);
+
+	printf("please input your idCard:\n");
+	scanf("%s",newNodeP->idCard);
+
+	printf("please input your telphone:\n");
+	scanf("%s",newNodeP->tel);
+
+	printf("please input your username:\n");
+	scanf("%s",newNodeP->uesrname);
+
+	printf("please input your password:\n");
+	scanf("%s",newNodeP->password);
+
+	newNodeP->money=0.0f;
+	newNodeP->next=NULL;
+
+	if(head==NULL)
+	{
+		head=newNodeP;
+		tail=newNodeP;
+	}
+	else
+	{
+		tail->next=newNodeP;
+		tail=newNodeP;
+	}
+	printf("Created Successfully !\n");
+}
+
+void signtheIn()
+{
+
+}
+
+void showMenu()
+{
+	printf("开户，按1\n");
+	printf("登录，按2\n");
+	int n;
+	scanf("%d",&n);
+
+	if(n==1)
+	{
+		signUp();
+	}
+	else if(n==2)
+	{
+		signIn();
+	}
+}
+
+void showtheMenu()
+{
+	printf("open an account,please press 1\n");
+	printf("signup，please press 2\n");
+	int m;
+	scanf("%d",&m);
+
+	if(m==1)
+	{
+		signtheUp();
+	}
+	else if(m==2)
+	{
+		signtheIn();
+	}
+}
+
+int main()
+{
+	printf("欢迎使用天地银行\n");
+	printf("welcome to TianDi bank\n");
+	int language;
+	printf("中文，请按1\n");
+	printf("English,please press 2\n");
+	scanf("%d",&language);
+	if(language==1)
+	{
+		showMenu();
+	}
+	else if(language==2)
+	{
+		showtheMenu();
+	}
+
+	LoadData();
+
+	printLinkedList();
+
+	saveData();
+
+	return 0;
+}
